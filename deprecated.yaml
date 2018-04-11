@@ -1,0 +1,116 @@
+swagger: "2.0"
+################################################################################
+#                              API Information                                 #
+################################################################################
+info:
+  version: "1.0"
+  title: Qa20170925071550
+  description: |
+    This service for qa test
+  contact:
+    name:       Nina Zhang
+    email:      ninazhang+service_qa20170925071550@exosite.com
+# during dev, should point to your local machine
+host: ninazhang-20170216.apps.exosite.io
+x-exosite-health-path: /
+# basePath prefixes all resource paths
+basePath: /api/v1
+# tags: Categories to be reference in documentation & marketplace
+tags:
+  - name:         testing
+    description:  QA testing
+schemes:
+  # tip: remove http to make production-grade
+  - https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+################################################################################
+#                                           Paths                              #
+################################################################################
+paths:
+  /service/get:
+    get:
+      tags:
+        - users
+      operationId: get
+      description: Returns the info from solution service endpoint.
+      x-exosite-example: |
+        local result = Qa20170925071550.get()
+        return result
+      responses:
+        "200":
+          description: Returns the info from solution service endpoint successfully
+          schema:
+            $ref: '#/definitions/Response200'
+        default:
+          description:  Failed to get the info from solution service endpoint.
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /service/deprecated:
+    get:
+      operationId: deprecated
+      description: the deprecated endpoint.
+      x-deprecated: true
+      x-exosite-example: |
+        local result = Qa20170925071550.deprecated()
+        return result
+      responses:
+        "200":
+          description: Returns the info from solution service endpoint successfully
+          schema:
+            $ref: '#/definitions/Response200'
+        default:
+          description:  Failed to get the info from solution service endpoint.
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+################################################################################
+#                                 Event                                        #
+################################################################################
+x-exosite-events:
+  deprecatedEvent:
+    x-deprecated: true
+    type:             SQS
+    summary:          Event message sent by QA test
+    description:      |
+      An event message containing the export task result.
+    parameters:
+      - name:         deprecatedevent
+        in:           body
+        required:     true
+        description:  test deprecated event
+        schema:
+          $ref: '#/definitions/event'
+################################################################################
+#                                 Definitions                                  #
+################################################################################
+definitions:
+  event:
+    type: object
+    description: trigger event info
+    properties:
+      who:
+        type: string
+        description: who trigger this event
+      data:
+        type: string
+        description: any info want to send out
+  ErrorResponse:
+    type: object
+    description: Error response
+    properties:
+      error:
+        type: string
+        description: Error message
+      status:
+        type: integer
+        description: Response code
+      type:
+        description: Error type
+        type: string
+  Response200:
+    description: the info in solution service endpoint
+    type: string
