@@ -1,0 +1,16 @@
+resources:
+-   alias: emptyFloat
+    format: float
+-   alias: emptyString
+    format: string
+-   alias: emptyInteger
+    format: integer
+-   alias: float
+    format: float
+    initial: 0
+-   alias: integer
+    format: integer
+    initial: 0
+-   alias: string
+    format: string
+    initial: "0"
